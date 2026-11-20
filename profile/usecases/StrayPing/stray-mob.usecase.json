@@ -24,6 +24,7 @@
     { "say": "Your group pulls a quilboar camp. Gorrak charges in.", "world": { "hit": { "from": "party1", "to": "enemy:1", "amount": 200 } } },
     { "world": { "hit": { "from": "enemy:2", "to": "party1", "amount": 90, "spell": "Shoot" } } },
     { "world": { "hit": { "from": "party2", "to": "enemy:1", "amount": 250, "spell": "Fireball" } } },
+    { "world": { "hit": { "from": "player", "to": "enemy:1", "amount": 150 } } },
     { "wait": 1 },
     { "world": { "hit": { "from": "party1", "to": "enemy:1", "amount": 200 } } },
     { "expect": { "lua": "UnitIsDead('enemy:1')" } },
