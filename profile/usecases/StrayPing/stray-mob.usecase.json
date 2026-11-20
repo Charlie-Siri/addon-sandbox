@@ -1,0 +1,43 @@
+{
+  "title": "Find the mob nobody is fighting",
+  "summary": "When your group is in combat but nobody has dealt or taken damage for 5 seconds, Stray Ping finds the stray mob, tells the party and pings it.",
+  "addons": ["StrayPing"],
+  "setup": {
+    "world": {
+      "base": "default",
+      "set": {
+        "player.zone": "The Barrens",
+        "player.subZone": "Razormane Grounds",
+        "player.leader": true,
+        "party": [
+          { "name": "Gorrak", "class": "WARRIOR", "health": 5200, "healthMax": 5200 },
+          { "name": "Seylin", "class": "MAGE", "health": 3100, "healthMax": 3100 }
+        ],
+        "enemies": [
+          { "id": 1, "name": "Razormane Quilboar", "health": 600, "healthMax": 600, "nameplate": true },
+          { "id": 2, "name": "Razormane Hunter", "health": 800, "healthMax": 800, "nameplate": true, "threat": ["party1"] }
+        ]
+      }
+    }
+  },
+  "steps": [
+    { "say": "Your group pulls a quilboar camp. Gorrak charges in.", "world": { "hit": { "from": "party1", "to": "enemy:1", "amount": 200 } } },
+    { "world": { "hit": { "from": "enemy:2", "to": "party1", "amount": 90, "spell": "Shoot" } } },
+    { "world": { "hit": { "from": "party2", "to": "enemy:1", "amount": 250, "spell": "Fireball" } } },
+    { "wait": 1 },
+    { "world": { "hit": { "from": "party1", "to": "enemy:1", "amount": 200 } } },
+    { "expect": { "lua": "UnitIsDead('enemy:1')" } },
+    { "say": "The Quilboar is down, but the Hunter that joined the fight stands back where nobody sees it. The group stays in combat.", "hold": 5 },
+    { "wait": { "for": { "chat": "Stuck in combat" }, "timeout": 10 } },
+    { "say": "After 5 seconds with no damage, Stray Ping finds the stray mob and says so, in your chat and in party chat.", "hold": 5 },
+    { "expect": { "chat": "Razormane Hunter has nobody on it" } },
+    { "expect": { "lua": "StrayPingDB.autoPingResult", "equals": "blocked" } },
+    { "say": "The game doesn't let addons ping on their own, so the ping button lights up instead.", "at": { "frame": "StrayPingButton" } },
+    { "hover": { "frame": "StrayPingButton" } },
+    { "expect": { "tooltip": "ping Razormane Hunter" } },
+    { "click": { "frame": "StrayPingButton" }, "say": "One click puts an Attack ping on the Hunter, so the group can see where it is." },
+    { "expect": { "chat": "Attack ping" } },
+    { "expect": { "chat": "on Razormane Hunter" } },
+    { "say": "Bind it to a key in Key Bindings > AddOns to ping without reaching for the mouse.", "hold": 3.5 }
+  ]
+}

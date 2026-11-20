@@ -1,0 +1,5 @@
+node_modules/
+dist/
+# the sandbox's own state stays local; use cases and their fixtures can be versioned
+profile/*
+!profile/usecases/

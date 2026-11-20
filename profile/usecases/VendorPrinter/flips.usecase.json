@@ -1,0 +1,80 @@
+{
+  "title": "Buy from a vendor, sell on the AH",
+  "summary": "The Flips tab finds items vendors sell that go for more on the Auction House, after the cut.",
+  "addons": [
+    "VendorPrinter"
+  ],
+  "setup": {
+    "world": "fixtures/sample.world.json",
+    "savedVariables": {
+      "VendorPrinter": {
+        "account": "fixtures/sample.VendorPrinter.account.lua",
+        "character": "fixtures/sample.VendorPrinter.character.lua"
+      }
+    }
+  },
+  "steps": [
+    {
+      "say": "Open VendorPrinter with /vp.",
+      "slash": "/vp"
+    },
+    {
+      "click": {
+        "text": "Flips"
+      },
+      "say": "The Flips tab needs no crafting: it lists items a vendor sells that go for more on the Auction House."
+    },
+    {
+      "expect": {
+        "shown": {
+          "text": "Profit each"
+        }
+      }
+    },
+    {
+      "say": "Each row shows what the vendor charges, what one sells for on the AH after the 5% cut, and the profit per item.",
+      "at": {
+        "text": "Profit each"
+      }
+    },
+    {
+      "say": "\"limited\" means the vendor only has a few in stock. The listed count is how many are already on the AH.",
+      "at": {
+        "text": "limited"
+      }
+    },
+    {
+      "hover": {
+        "text": "listed",
+        "nth": 2
+      },
+      "say": "Hover a flip to see the item and its prices."
+    },
+    {
+      "expect": {
+        "tooltip": "Click to print where to buy and how much it makes"
+      }
+    },
+    {
+      "click": {
+        "text": "listed",
+        "nth": 2
+      },
+      "say": "Click it to print where to buy it and the profit for your quantity."
+    },
+    {
+      "expect": {
+        "chat": "Profit"
+      }
+    },
+    {
+      "expect": {
+        "chat": "Buy from"
+      }
+    },
+    {
+      "say": "The details are in chat: which vendor sells it, the AH price and the profit for 10.",
+      "hold": 3
+    }
+  ]
+}

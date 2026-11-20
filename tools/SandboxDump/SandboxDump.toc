@@ -1,0 +1,8 @@
+## Interface: 16001
+## Title: Sandbox Dump
+## Notes: Exports client facts for the Addon Sandbox: build, API names, enums, widget methods, item data. /sbdump
+## Version: 0.1.0
+## SavedVariables: SandboxDumpDB
+## OptionalDeps: VendorPrinter
+
+SandboxDump.lua

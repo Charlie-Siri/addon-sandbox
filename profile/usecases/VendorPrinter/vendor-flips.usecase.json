@@ -1,0 +1,101 @@
+{
+  "title": "Recipes that make money at a vendor",
+  "summary": "VendorPrinter lists the recipes you can craft and sell to a vendor for more than the reagents cost, then builds a shopping list.",
+  "addons": [
+    "VendorPrinter"
+  ],
+  "setup": {
+    "world": "fixtures/sample.world.json",
+    "savedVariables": {
+      "VendorPrinter": {
+        "account": "fixtures/sample.VendorPrinter.account.lua",
+        "character": "fixtures/sample.VendorPrinter.character.lua"
+      }
+    }
+  },
+  "steps": [
+    {
+      "say": "Type /vp to open VendorPrinter.",
+      "slash": "/vp"
+    },
+    {
+      "expect": {
+        "shown": {
+          "text": "Vendor Printer"
+        }
+      }
+    },
+    {
+      "say": "The Vendor tab lists every recipe you know that sells to a vendor for more than its reagents cost. Best profit first.",
+      "at": {
+        "text": "[Vendor]"
+      }
+    },
+    {
+      "say": "Cost is the cheapest way to buy the reagents: from a vendor or the Auction House, whichever is lower.",
+      "at": {
+        "text": "Cost"
+      }
+    },
+    {
+      "say": "Profit % is the profit as a share of the cost: what you make on every copper you put in.",
+      "at": {
+        "text": "Profit %"
+      }
+    },
+    {
+      "hover": {
+        "text": "Longjaw Mud Snapper"
+      },
+      "say": "Hover a recipe to see each reagent, what it costs and where to buy it."
+    },
+    {
+      "expect": {
+        "tooltip": [
+          "Reagents per craft",
+          "Profit per craft"
+        ]
+      }
+    },
+    {
+      "click": {
+        "text": "10",
+        "within": "VendorPrinterFrame"
+      },
+      "say": "Qty sets how many crafts the shopping list is for."
+    },
+    {
+      "key": "BACKSPACE"
+    },
+    {
+      "key": "BACKSPACE"
+    },
+    {
+      "type": "20"
+    },
+    {
+      "key": "ENTER"
+    },
+    {
+      "click": {
+        "text": "Longjaw Mud Snapper"
+      },
+      "say": "Click a recipe: its Cooking window opens on that recipe, and a shopping list for 20 crafts goes to chat."
+    },
+    {
+      "expect": {
+        "lua": "SANDBOX.openProfession",
+        "equals": "Cooking"
+      }
+    },
+    {
+      "expect": {
+        "chat": "Shopping list for 20x Longjaw Mud Snapper"
+      }
+    },
+    {
+      "say": "The shopping list is in the chat window, grouped by vendor and Auction House.",
+      "hold": 3
+    }
+  ]
+}

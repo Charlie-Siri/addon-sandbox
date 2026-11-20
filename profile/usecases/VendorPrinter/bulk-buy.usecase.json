@@ -1,0 +1,20 @@
+{
+  "title": "Buy more than a stack in one go",
+  "summary": "Alt+click an item at a vendor, type any amount, and VendorPrinter makes the purchases for you: 193 becomes 9 x 20 + 1 x 13.",
+  "addons": ["VendorPrinter"],
+  "setup": { "world": { "base": "default", "set": { "items.2678.stack": 20, "client.itemsCached": true } }, "wait": 2 },
+  "steps": [
+    { "say": "At a vendor, one purchase is capped at a stack: 20 Mild Spices at most.", "world": { "open": "merchant", "name": "Shan'ti" } },
+    { "click": { "frame": "MerchantItem1ItemButton" }, "alt": true, "say": "Alt+click the item instead." },
+    { "expect": { "shown": { "text": "Buy in bulk" } } },
+    { "key": "BACKSPACE" },
+    { "key": "BACKSPACE" },
+    { "type": "193", "say": "Type how many you want: 193." },
+    { "expect": { "shown": { "text": "10 purchases of up to 20" } } },
+    { "say": "It shows the total price and how many purchases that takes.", "at": { "text": "10 purchases of up to 20" } },
+    { "click": { "text": "Buy", "within": "VendorPrinterBulkBuy" }, "say": "Click Buy and it makes them one after another, with a progress bar." },
+    { "wait": { "for": { "chat": "Bought 193x" }, "timeout": 20 } },
+    { "expect": { "lua": "GetItemCount(2678)", "equals": 193 } },
+    { "say": "193 Mild Spices in 10 purchases. It stops by itself if the vendor runs out, your money runs out or your bags fill up.", "hold": 4 }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "title": "Never lose a buff",
+  "summary": "Stack Your Buffs shows an icon for every buff you're missing or about to lose. One click casts it.",
+  "addons": ["StackYourBuffs"],
+  "setup": {
+    "world": {
+      "base": "default",
+      "set": { "player.zone": "The Barrens", "player.subZone": "The Crossroads", "auras": [ { "spellId": 9910, "remaining": 140 } ] }
+    }
+  },
+  "steps": [
+    { "say": "Out in the world without Mark of the Wild: Stack Your Buffs puts up an icon for each buff you're missing.", "at": { "frame": "StackYourBuffsButton1" } },
+    { "hover": { "frame": "StackYourBuffsButton1" }, "say": "Hover an icon to see what's wrong and what a click will do." },
+    { "expect": { "tooltip": ["Mark of the Wild", "Missing"] } },
+    { "click": { "frame": "StackYourBuffsButton1" }, "say": "Left-click casts it. No digging through the spell book." },
+    { "expect": { "lua": "C_UnitAuras.GetPlayerAuraBySpellID(9885) ~= nil" } },
+    { "say": "Thorns has about two minutes left, so its icon counts down. That's the early warning: quiet, no chat.", "at": { "frame": "StackYourBuffsButton1" } },
+    { "wait": 80, "say": "A minute before it runs out, the final warning plays a sound and says so in chat." },
+    { "expect": { "chat": "Thorns ends in" } },
+    { "click": { "frame": "StackYourBuffsButton1" }, "say": "One click recasts it for another 10 minutes." },
+    { "expect": { "lua": "C_UnitAuras.GetPlayerAuraBySpellID(9910).expirationTime - GetTime() > 500" } },
+    { "expect": { "hidden": { "frame": "StackYourBuffsButton1" } } },
+    { "say": "Every buff is up, so the bar is empty. It stays out of the way until something needs you.", "hold": 4 }
+  ]
+}

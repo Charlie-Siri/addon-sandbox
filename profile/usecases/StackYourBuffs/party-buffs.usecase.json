@@ -1,0 +1,141 @@
+{
+  "title": "Buffs for the right people",
+  "addons": [
+    "StackYourBuffs"
+  ],
+  "setup": {
+    "world": {
+      "base": "default",
+      "set": {
+        "player.zone": "The Barrens",
+        "player.subZone": "The Crossroads",
+        "auras": [
+          {
+            "spellId": 9885,
+            "remaining": 1700
+          }
+        ],
+        "party": [
+          {
+            "name": "Gorrak",
+            "class": "WARRIOR",
+            "talents": [
+              5,
+              5,
+              31
+            ]
+          },
+          {
+            "name": "Seylin",
+            "class": "MAGE",
+            "talents": [
+              10,
+              31,
+              0
+            ],
+            "auras": [
+              {
+                "spellId": 9885,
+                "remaining": 1500
+              }
+            ]
+          },
+          {
+            "name": "Thalia",
+            "class": "PRIEST",
+            "talents": [
+              21,
+              30,
+              0
+            ],
+            "auras": [
+              {
+                "spellId": 9885,
+                "remaining": 1600
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "wait": 4
+  },
+  "steps": [
+    {
+      "say": "You're a druid in a group: Gorrak the warrior, Seylin the mage and Thalia the priest. Two icons are up, both for Gorrak.",
+      "at": {
+        "frame": "StackYourBuffsButton2"
+      }
+    },
+    {
+      "hover": {
+        "frame": "StackYourBuffsButton2"
+      },
+      "say": "Thorns only helps whoever gets hit, so it's suggested for the tank. Stack Your Buffs read Gorrak's talents: 31 points in Protection."
+    },
+    {
+      "expect": {
+        "tooltip": [
+          "Gorrak: Missing",
+          "For the tank: Gorrak"
+        ]
+      }
+    },
+    {
+      "click": {
+        "frame": "StackYourBuffsButton2"
+      },
+      "say": "One click casts Thorns on Gorrak, not on you."
+    },
+    {
+      "expect": {
+        "lua": "(function() for i = 1, 40 do local a = C_UnitAuras.GetAuraDataByIndex('party1', i) if not a then return false end if a.spellId == 9910 then return true end end end)()"
+      }
+    },
+    {
+      "expect": {
+        "lua": "C_UnitAuras.GetPlayerAuraBySpellID(9910) == nil"
+      }
+    },
+    {
+      "say": "No Thorns reminder for you or Seylin: neither of you tanks.",
+      "hold": 3.5
+    },
+    {
+      "hover": {
+        "frame": "StackYourBuffsButton1"
+      },
+      "say": "Mark of the Wild helps everyone. You, Seylin and Thalia have it; only Gorrak is missing it."
+    },
+    {
+      "expect": {
+        "tooltip": [
+          "Mark of the Wild",
+          "Gorrak: Missing"
+        ]
+      }
+    },
+    {
+      "click": {
+        "frame": "StackYourBuffsButton1"
+      }
+    },
+    {
+      "expect": {
+        "lua": "(function() for i = 1, 40 do local a = C_UnitAuras.GetAuraDataByIndex('party1', i) if not a then return false end if a.spellId == 9885 then return true end end end)()"
+      }
+    },
+    {
+      "expect": {
+        "hidden": {
+          "frame": "StackYourBuffsButton1"
+        }
+      }
+    },
+    {
+      "say": "Everyone has what they need, so the bar is empty. Mages get the same for Arcane Intellect, and priests for Divine Spirit: only mana users are suggested.",
+      "hold": 5
+    }
+  ],
+  "summary": "In a group, Stack Your Buffs suggests each buff only for the people it helps: Thorns on the tank, Arcane Intellect and Divine Spirit on mana users. One click casts it on them."
+}

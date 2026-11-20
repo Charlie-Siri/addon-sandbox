@@ -1,0 +1,84 @@
+{
+  "title": "Crafts worth selling on the Auction House",
+  "summary": "The AH sale tab prices each craft at the cheapest Auction House listing, minus the 5% cut, and shows how much competition there is.",
+  "addons": [
+    "VendorPrinter"
+  ],
+  "setup": {
+    "world": "fixtures/sample.world.json",
+    "savedVariables": {
+      "VendorPrinter": {
+        "account": "fixtures/sample.VendorPrinter.account.lua",
+        "character": "fixtures/sample.VendorPrinter.character.lua"
+      }
+    }
+  },
+  "steps": [
+    {
+      "say": "Open VendorPrinter with /vp.",
+      "slash": "/vp"
+    },
+    {
+      "click": {
+        "text": "AH sale"
+      },
+      "say": "The AH sale tab prices the same crafts for selling on the Auction House instead of a vendor."
+    },
+    {
+      "expect": {
+        "shown": {
+          "text": "AH net"
+        }
+      }
+    },
+    {
+      "say": "AH net is what one craft brings in: the cheapest listing, minus the Auction House's 5% cut.",
+      "at": {
+        "text": "AH net"
+      }
+    },
+    {
+      "say": "Profit % compares the AH price after the cut with the cost: +16% here means 16 copper back on every 100 spent.",
+      "at": {
+        "text": "+16%"
+      }
+    },
+    {
+      "say": "The number after each name is how many are listed right now: your competition.",
+      "at": {
+        "text": "Coyote Steak"
+      }
+    },
+    {
+      "hover": {
+        "text": "Coyote Steak"
+      },
+      "say": "Hover a row for the full breakdown: reagents, sale price after the cut, and profit."
+    },
+    {
+      "expect": {
+        "tooltip": [
+          "each on AH (after cut)",
+          "Competition"
+        ]
+      }
+    },
+    {
+      "click": {
+        "text": "Coyote Steak"
+      },
+      "say": "Click it: the Cooking window opens on the recipe, and a shopping list based on the AH price goes to chat."
+    },
+    {
+      "expect": {
+        "lua": "SANDBOX.openProfession",
+        "equals": "Cooking"
+      }
+    },
+    {
+      "expect": {
+        "chat": "Shopping list for 10x Coyote Steak (sell on the AH)"
+      }
+    }
+  ]
+}

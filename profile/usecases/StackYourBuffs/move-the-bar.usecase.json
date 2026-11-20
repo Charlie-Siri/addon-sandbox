@@ -1,0 +1,17 @@
+{
+  "title": "Move the reminder bar",
+  "summary": "Put the reminder icons wherever you like: unlock, drag, lock. The position is saved.",
+  "addons": ["StackYourBuffs"],
+  "setup": { "world": "default" },
+  "steps": [
+    { "say": "/syb test shows a 20-second preview of every kind of reminder, so you can see where the bar sits.", "slash": "/syb test" },
+    { "say": "/syb move unlocks it: a blue box appears over the bar.", "slash": "/syb move" },
+    { "expect": { "shown": { "text": "drag to move" } } },
+    { "drag": { "text": "drag to move" }, "to": { "dx": 0, "dy": 300 }, "say": "Drag the box to wherever you want the icons." },
+    { "say": "/syb lock locks it in place. The position is saved: it survives /reload and logging out.", "slash": "/syb lock" },
+    { "expect": { "lua": "StackYourBuffsRow:GetTop() < 400" } },
+    { "expect": { "lua": "StackYourBuffsDB.settings.locked", "equals": true } },
+    { "expect": { "hidden": { "text": "drag to move" } } },
+    { "say": "Prefer clicking? The same Move rows button is in the options window (/syb).", "hold": 3.5 }
+  ]
+}

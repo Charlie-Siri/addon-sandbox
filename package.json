@@ -1,0 +1,25 @@
+{
+  "name": "addon-sandbox",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Runs WoW Forever addons in a browser: Lua 5.1 VM, frames, mocked game API.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "check": "node --experimental-strip-types --no-warnings scripts/check.ts",
+    "test": "node --experimental-strip-types --no-warnings scripts/test.ts",
+    "typecheck": "tsc --noEmit",
+    "surface": "node --experimental-strip-types --no-warnings scripts/surface.ts",
+    "video": "node --experimental-strip-types --no-warnings scripts/video.ts",
+    "schema": "node --experimental-strip-types --no-warnings scripts/schema.ts"
+  },
+  "dependencies": {
+    "wasmoon-lua5.1": "1.18.12"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.21",
+    "playwright-core": "1.64.1",
+    "typescript": "5.8.3",
+    "vite": "6.3.5"
+  }
+}

@@ -1,0 +1,321 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "addon-sandbox/usecase.schema.json",
+  "title": "Addon Sandbox use case",
+  "type": "object",
+  "required": [
+    "title",
+    "addons",
+    "steps"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "addons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "allowErrors": {
+      "type": "boolean",
+      "description": "Lua errors do not fail the use case"
+    },
+    "setup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "world": {
+          "description": "\"default\", a fixture path (relative to the use case folder), or {\"base\": path|\"default\", \"set\": {\"dotted.path\": value}}",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        },
+        "savedVariables": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "account": {
+                "type": "string"
+              },
+              "character": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "Per addon: fixture .lua paths or inline Lua. Addons not listed start with no SavedVariables."
+        },
+        "run": {
+          "type": "string",
+          "description": "Lua run after login"
+        },
+        "wait": {
+          "type": "number",
+          "description": "Seconds after login before step 1 (default 3; the video title card shows meanwhile)"
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/step"
+      }
+    }
+  },
+  "$defs": {
+    "target": {
+      "description": "What to point at, found the way a viewer would. Prefer text.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "text"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "type": "string",
+              "description": "Visible text (colour codes ignored; case and punctuation ignored for exact matches; falls back to \"contains\")"
+            },
+            "within": {
+              "type": "string",
+              "description": "Only inside this frame (global name or dotted path)"
+            },
+            "nth": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Pick the nth match, top to bottom, when several match"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "frame"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "frame": {
+              "type": "string",
+              "description": "Global frame name"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "path"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Global name then parentKeys, e.g. \"MyFrame.Tabs.2\""
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "point"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "point": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2,
+              "description": "[x, y] UI units from the top-left (screen is about 1365x768)"
+            }
+          }
+        }
+      ]
+    },
+    "assertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "shown": {
+          "$ref": "#/$defs/target"
+        },
+        "hidden": {
+          "$ref": "#/$defs/target"
+        },
+        "tooltip": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "A visible tooltip contains each string"
+        },
+        "noTooltip": {
+          "const": true
+        },
+        "chat": {
+          "type": "string",
+          "description": "Some chat line since the start contains this"
+        },
+        "lua": {
+          "type": "string",
+          "description": "Lua expression; true unless equals is given"
+        },
+        "equals": {
+          "description": "JSON value lua must equal"
+        },
+        "noErrors": {
+          "const": true
+        }
+      }
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "say": {
+          "type": "string",
+          "description": "Caption shown during this step, or alone as a caption step"
+        },
+        "at": {
+          "$ref": "#/$defs/target",
+          "description": "Caption-only steps: what the caption points at"
+        },
+        "hold": {
+          "type": "number",
+          "description": "Seconds a caption or hover stays (default: reading time)"
+        },
+        "slash": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "click": {
+          "$ref": "#/$defs/target"
+        },
+        "hover": {
+          "$ref": "#/$defs/target"
+        },
+        "drag": {
+          "$ref": "#/$defs/target"
+        },
+        "to": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/target"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "dx": {
+                  "type": "number"
+                },
+                "dy": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "type": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "scroll": {
+          "$ref": "#/$defs/target"
+        },
+        "delta": {
+          "type": "integer"
+        },
+        "world": {
+          "type": "object",
+          "description": "One of: open, close, combat, money, give, take, buy, sell, aura, cast, hit, set"
+        },
+        "event": {
+          "type": "string"
+        },
+        "args": {
+          "type": "string"
+        },
+        "wait": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "object",
+              "required": [
+                "for"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "for": {
+                  "$ref": "#/$defs/assertion"
+                },
+                "timeout": {
+                  "type": "number"
+                }
+              }
+            }
+          ]
+        },
+        "run": {
+          "type": "string"
+        },
+        "expect": {
+          "$ref": "#/$defs/assertion"
+        },
+        "button": {
+          "enum": [
+            "LeftButton",
+            "RightButton",
+            "MiddleButton"
+          ]
+        },
+        "shift": {
+          "type": "boolean"
+        },
+        "ctrl": {
+          "type": "boolean"
+        },
+        "alt": {
+          "type": "boolean"
+        },
+        "double": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
