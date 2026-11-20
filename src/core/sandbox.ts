@@ -51,7 +51,7 @@ export interface VisibleText {
   clickName?: string; clickId?: number; covered?: string;
 }
 export interface TargetMatch {
-  kind: 'text' | 'edit' | 'frame' | 'point'; name?: string; text?: string; exact: boolean; ownerId?: number;
+  kind: 'text' | 'edit' | 'frame' | 'point'; name?: string; text?: string; exact: boolean; strict?: boolean; ownerId?: number;
   rect: [number, number, number, number]; point: [number, number];
   clickName?: string; clickId?: number; clickRect?: [number, number, number, number]; covered?: string;
 }

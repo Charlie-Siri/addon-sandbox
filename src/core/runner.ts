@@ -521,6 +521,9 @@ export class Runner {
     if ('text' in t) {
       const exact = ms.filter((m) => m.exact);
       if (exact.length) ms = exact;
+      // "Profit %" is a loose match for "Profit" too: the same text wins.
+      const strict = ms.filter((m) => m.strict);
+      if (strict.length) ms = strict;
       if (t.nth) {
         if (t.nth > ms.length) throw new StepError(`Only ${ms.length} visible match${ms.length === 1 ? '' : 'es'} for "${t.text}", nth is ${t.nth}`, ms.map((m) => m.text ?? ''));
         return ms[t.nth - 1];

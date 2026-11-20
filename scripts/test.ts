@@ -129,6 +129,18 @@ else {
     assert.equal(shown, true, '/vp opened VendorPrinterFrame');
     assert.ok(merchant > 0, 'merchant window open with items');
   });
+
+  await test('VendorPrinter: limited-stock vendor prices stay out of reagent costs', async () => {
+    const { sandbox: sb, log } = await loadHeadless({ addons: ['VendorPrinter'], world: defaultWorld({ name: 'Tester-Forever', realm: '0' }) });
+    sb.advance(0.5);
+    sb.run('local d = VendorPrinterDB wipe(d.vendor) wipe(d.vendorUnlimited) wipe(d.vendorLimited)');
+    sb.openMerchant(1);   // Shan'ti: 2678 unlimited at 10c, 2320 limited (5 in stock) at 10c
+    sb.advance(0.5);
+    const d = sb.eval('{ v = VendorPrinterDB.version, u2678 = VendorPrinterDB.vendorUnlimited[2678], u2320 = VendorPrinterDB.vendorUnlimited[2320] or false, v2320 = VendorPrinterDB.vendor[2320], l2320 = VendorPrinterDB.vendorLimited[2320] }').value;
+    sb.close();
+    assert.deepEqual(log.errors.map((e) => e.message), []);
+    assert.deepEqual(d, { v: 2, u2678: 10, u2320: false, v2320: 10, l2320: true });
+  });
 }
 
 if (vpInstalled) {

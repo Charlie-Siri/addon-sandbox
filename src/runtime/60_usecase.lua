@@ -231,6 +231,7 @@ function S.UCFindJSON(literal)
                 if exact or contains then
                     local m = ClickInfo(t.glyph, t.owner)
                     m.kind, m.name, m.text, m.exact = t.kind, Name(t.owner), t.plain, exact
+                    m.strict = have == want   -- same text, not only after dropping punctuation
                     m.rect = HostRect(t.glyph)
                     m.ownerId = W[t.owner].id
                     out[#out + 1] = m
